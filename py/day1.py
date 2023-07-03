@@ -29,6 +29,43 @@ def test_challenge_test_data():
     assert result.elf_num == 4
     assert result.total_calories == 24000
 
+    assert who_has_most_calories_v2(test_elf_raw_inventory) == 24000
+    assert who_has_most_calories_v3(test_elf_raw_inventory) == 24000
+    assert who_has_most_calories_v4(test_elf_raw_inventory) == 24000
+
+
+def who_has_most_calories_v4(elf_raw_inventory: str) -> int:
+    inventories = []
+    for group in filter(None, elf_raw_inventory.split('\n\n')):
+        inventories.append(sum(map(int, group.split('\n'))))
+    return max(inventories)
+
+
+def who_has_most_calories_v3(elf_raw_inventory: str) -> int:
+    # is this even readable?
+    return max(
+        [
+            sum(map(int, group.split('\n')))
+            for group in filter(None, elf_raw_inventory.split('\n\n'))
+        ])  # noqa: E501
+
+
+def who_has_most_calories_v2(elf_raw_inventory: str) -> int:
+
+    lines = elf_raw_inventory.split('\n')
+
+    max_calories = 0
+    running_total = 0
+    for line in lines:
+        if not line:
+            if running_total > max_calories:
+                max_calories = running_total
+            running_total = 0
+        else:
+            running_total += int(line)
+
+    return max_calories
+
 
 @dataclass
 class ElfInventory:
@@ -68,6 +105,6 @@ if __name__ == '__main__':
     with open(path_to_file, 'r') as file:
         raw_inventory = file.read()
 
-    result = who_has_most_calories(raw_inventory)
-    print(result.total_calories)
+    max_calories = who_has_most_calories_v4(raw_inventory)
+    print(max_calories)
     pass
