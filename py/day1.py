@@ -5,6 +5,8 @@ Find the Elf carrying the most Calories. How many total Calories is that Elf car
 
 from dataclasses import dataclass
 from typing import List
+import os
+
 
 test_elf_raw_inventory = """1000 
 2000 
@@ -62,7 +64,8 @@ def load_elf_inventory(elf_raw_inventory: str) -> List[ElfInventory]:
 
 
 if __name__ == '__main__':
-    with open('day1_input.txt', 'r') as file:
+    path_to_file = os.path.join(os.path.dirname(__file__), '../day1_input.txt')
+    with open(path_to_file, 'r') as file:
         raw_inventory = file.read()
 
     result = who_has_most_calories(raw_inventory)
