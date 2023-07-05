@@ -3,10 +3,9 @@ https://adventofcode.com/2022/day/1
 Find the Elf carrying the most Calories. How many total Calories is that Elf carrying?  # noqa E501
 """
 
+import os
 from dataclasses import dataclass
 from typing import List
-import os
-
 
 test_elf_raw_inventory = """1000 
 2000 
@@ -84,6 +83,12 @@ def who_has_most_calories(elf_raw_inventory: str) -> ElfInventory:
     return elf_most
 
 
+def top_3_elves_total_calories(elf_raw_inventory: str) -> ElfInventory:
+    elf_results = load_elf_inventory(elf_raw_inventory)
+    elf_results = sorted(map(lambda er: er.total_calories, elf_results), reverse=True)  # noqa E501
+    return sum(elf_results[:3])
+
+
 def load_elf_inventory(elf_raw_inventory: str) -> List[ElfInventory]:
     lines = elf_raw_inventory.split('\n')
 
@@ -105,6 +110,7 @@ if __name__ == '__main__':
     with open(path_to_file, 'r') as file:
         raw_inventory = file.read()
 
-    max_calories = who_has_most_calories_v4(raw_inventory)
+    max_calories = who_has_most_calories(raw_inventory)
     print(max_calories)
-    pass
+
+    print(top_3_elves_total_calories(raw_inventory))
